@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Memory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0.5rem 0 0 0.5rem;
+      height: 100vh;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+    }
+
+    .card {
+      flex: 0 0 auto;
+      border: 1px solid black;
+      background-color: #607d8b;
+      width: 8rem;
+      height: 8rem;
+      cursor: pointer;
+      margin: 0 0.5rem 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const memoryCardPairsColors = [
+      '#e91e63',
+      '#f8bbd0',
+      '#9c27b0',
+      '#3f51b5',
+      '#03a9f4',
+      '#00bcd4',
+      '#009688',
+      '#8bc34a',
+      '#827717',
+      '#dcedc8',
+      '#ffeb3b',
+      '#ff9800',
+      '#795548',
+      '#9e9e9e',
+      '#000000',
+      '#ffffff',
+
+    ]
+    let cards = []
+    for (const color of memoryCardPairsColors) {
+      const [card1, card2] = createMemoryCardPair(color)
+      cards.push(card1, card2)
+    }
+    cards = shuffle(cards)
+    for (const card of cards) {
+      document.body.appendChild(card)
+    }
+
+    function createMemoryCardPair(color) {
+      return [
+        createMemoryCard(color),
+        createMemoryCard(color)
+      ]
+    }
+
+    function createMemoryCard(color) {
+      const card = document.createElement('div')
+      card.className = 'card'
+      card.setAttribute('data-color', color)
+      return card
+    }
+
+    document.addEventListener('click', function (event) {
+      const { target } = event
+      if (target.classList.contains('card')) {
+        const card = target
+        const color = card.getAttribute('data-color')
+        if (card.style.backgroundColor) {
+          card.style.backgroundColor = null
+        } else {
+          card.style.backgroundColor = color
+        }
+      }
+    })
+
+    function shuffle(values) {
+      const shuffledValues = []
+      for (const value of values) {
+        const index = randomInteger(0, shuffledValues.length)
+        shuffledValues.splice(index, 0, value)
+      }
+      return shuffledValues
+    }
+
+    function randomInteger(min, max) {
+      return min + Math.floor((max - min) * Math.random())
+    }
+  </script>
+</body>
+</html>
