@@ -18,16 +18,37 @@
     .card {
       flex: 0 0 auto;
       border: 1px solid black;
-      background-color: #607d8b;
       width: 8rem;
       height: 8rem;
       cursor: pointer;
       margin: 0 0.5rem 0.5rem 0;
+      position: relative;
+      transition: transform 1s;
+      transform-style: preserve-3d;
+      transform: rotateY(180deg);
+    }
+
+    .card__face {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      backface-visibility: hidden;
+    }
+
+    .card__face--back {
+      background-color: #607d8b;
+      transform: rotateY(180deg);
+    }
+
+    .card--is-revealed {
+      transform: rotateY(360deg);
     }
   </style>
 </head>
 <body>
   <script>
+    const CARD_CLASS = 'card'
+
     const memoryCardPairsColors = [
       '#e91e63',
       '#f8bbd0',
@@ -45,7 +66,6 @@
       '#9e9e9e',
       '#000000',
       '#ffffff',
-
     ]
     let cards = []
     for (const color of memoryCardPairsColors) {
@@ -66,21 +86,25 @@
 
     function createMemoryCard(color) {
       const card = document.createElement('div')
-      card.className = 'card'
-      card.setAttribute('data-color', color)
+      card.className = CARD_CLASS
+
+      const cardFront = document.createElement('div')
+      cardFront.className = 'card__face card__face--front'
+      cardFront.style.backgroundColor = color
+      card.appendChild(cardFront)
+
+      const cardBack = document.createElement('div')
+      cardBack.className = 'card__face card__face--back'
+      card.appendChild(cardBack)
+
       return card
     }
 
     document.addEventListener('click', function (event) {
       const { target } = event
-      if (target.classList.contains('card')) {
-        const card = target
-        const color = card.getAttribute('data-color')
-        if (card.style.backgroundColor) {
-          card.style.backgroundColor = null
-        } else {
-          card.style.backgroundColor = color
-        }
+      const card = target.closest('.card')
+      if (card) {
+        card.classList.toggle('card--is-revealed')
       }
     })
 
