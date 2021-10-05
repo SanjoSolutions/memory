@@ -19,13 +19,15 @@
         border: 1px solid black;
         cursor: pointer;
         flex: 0 0 auto;
-        height: 8rem;
         margin: 0 0.5rem 0.5rem 0;
         position: relative;
         transform: rotateY(180deg);
         transform-style: preserve-3d;
         transition: transform 1s;
-        width: 8rem;
+        width: calc((100vw - 2 * 0.5rem - 4 * 0.5rem) / 4);
+        height: calc((100vw - 2 * 0.5rem - 4 * 0.5rem) / 4);
+        max-width: 8rem;
+        max-height: 8rem;
       }
 
       .card__face {
